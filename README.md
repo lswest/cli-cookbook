@@ -10,6 +10,10 @@ However, I take no responsibility for anything that can go wrong - this is inten
 
 For those of you uncomfortable with LaTeX, you can open an issue on this repo, and I will try to add in your suggestions in a timely manner!
 
+Systems
+==========
+For the moment I've limited myself to Linux/Unix systems.  If anyone wants to add to the Cookbook with commands for Windows or Mac OS X, I am not opposed to it.  However, I will keep the Cookbook sectioned accordingly, if this happens.
+
 
 Technical Information
 =====================
