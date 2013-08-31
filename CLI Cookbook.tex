@@ -102,7 +102,7 @@ Similar to the convert command, this can convert between file formats (any forma
 All the following commands are for Debian based systems (which is what Ubuntu is).  In the case of trusted keys - not all Debian systems have them. 
 \subsubsection{Remove leftover configuration files from removed packages}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{sudo dpkg --purge `dpkg -l | grep ^rc | awk '{print \$2}'`}
+\codeHighlight{sudo dpkg --purge `dpkg -l | grep ^rc | awk '\{print \$2\}'`}
 \end{Verbatim}
 
 
@@ -114,7 +114,7 @@ COLUMNS is a variable being passed to dpkg-query, and isn't a mandatory part of 
 
 \subsubsection{Create a list of installed packages for restoring your system}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ {print \$1}' > packages.list}
+\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}' > packages.list}
 \end{Verbatim}
 This list only contains only package names of installed packages. One per line. It is therefore suitable for re-installing all packages from the command line (see below). Alphabetical order.
 
@@ -126,7 +126,7 @@ This command generates a list containing the state of each installed package, an
 
 \subsubsection{Restore a list of packages}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ {print \$1}' > packages.list}
+\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}' > packages.list}
 \end{Verbatim}
 
 \subsubsection{Save all software sources to one file}
