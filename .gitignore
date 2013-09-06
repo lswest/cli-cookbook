@@ -26,6 +26,8 @@
 *.ps
 *.snm
 *.synctex.gz
+*.swp
+*~
 *.toc
 *.vrb
 *.xdy
