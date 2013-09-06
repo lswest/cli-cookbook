@@ -13,7 +13,7 @@
 
 \begin{document}
 \title{CLI Cookbook}
-\author{Lucas Westermann and readers of Command \& Conquer}
+\author{Lucas Westermann with E. Frank Sandig \\ and other readers of Command \& Conquer}
 \maketitle
 \textbf{Note: Each command in a longer list is separated by a blank line.  All commands on more than one line without a blank line are simply wrapped text - run it as one command! } \\
 You can find this on GitHub: \url{https://github.com/lswest/cli-cookbook}\\
@@ -94,7 +94,7 @@ The find command searches all files (-type f) in the current directory and below
 \codeHighlight{soffice --headless --nologo --convert-to odp *.ppt}
 # set source and destination formats as desire
 \end{Verbatim}
-Similar to the convert command, this can convert between file formats (any formats you can use/create in LibreOffice).  The first two arguments are to hide the LibreOffice interface, and the third argument tells it what to do.  The reader who supplied this command mentioned that they found it useful for converting the PowerPoint slides they received from their professors to PDF or ODP.  However, converting the latest Microsoft formats (.docx, .pptx, etc.) can/will result in formatting issues in LibreOffice 3.5 in Ubuntu 12.04.  It may also impact later versions, but this was the warning supplied with the command.
+Similar to the convert command, this can convert between file formats (any formats you can use/create in LibreOffice).  The first two arguments are to hide the LibreOffice interface, and the third argument tells it what to do.  The reader who supplied this command mentioned that they found it useful for converting the PowerPoint slides they received from their professors to PDF or ODP.  However, converting the latest Microsoft formats (.docx, .pptx, etc.) can/will result in formatting issues in LibreOffice 3.5 in Ubuntu 12.04. as well as in LibreOffice 4.1 in Ubuntu 13.04. Ubuntu 12.10 has not been tested yet.
 
 \section{Packages}
 \label{Packages}
@@ -102,7 +102,7 @@ Similar to the convert command, this can convert between file formats (any forma
 All the following commands are for Debian based systems (which is what Ubuntu is).  In the case of trusted keys - not all Debian systems have them. 
 \subsubsection{Remove leftover configuration files from removed packages}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{sudo dpkg --purge `dpkg -l | grep ^rc | awk '{print \$2}'`}
+\codeHighlight{sudo dpkg --purge `dpkg -l | grep ^rc | awk '\{print \$2\}'`}
 \end{Verbatim}
 
 
@@ -114,7 +114,7 @@ COLUMNS is a variable being passed to dpkg-query, and isn't a mandatory part of 
 
 \subsubsection{Create a list of installed packages for restoring your system}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ {print \$1}' > packages.list}
+\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}' > packages.list}
 \end{Verbatim}
 This list only contains only package names of installed packages. One per line. It is therefore suitable for re-installing all packages from the command line (see below). Alphabetical order.
 
@@ -123,11 +123,6 @@ This list only contains only package names of installed packages. One per line. 
 \codeHighlight{apt-mark showauto > package-states-auto}
 \end{Verbatim}
 This command generates a list containing the state of each installed package, and saves it to the file package-states-auto.  This is needed for restoring an installation properly.
-
-\subsubsection{Restore a list of packages}
-\begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ {print \$1}' > packages.list}
-\end{Verbatim}
 
 \subsubsection{Save all software sources to one file}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -293,6 +288,12 @@ This command can be extremely dangerous to use if you're not sure what you're do
 \end{Verbatim}
 This command is extremely dangerous to use blindly without understanding what you're doing.  This is because, similar to the previous command, it fills the hard drive with data.  Instead of zeros, it instead uses random data.  The reader who submitted this code mentions as well that they do this with old drives before selling them.  They also mention that their preference is to re-format them as \textbf{NTFS} at the end as well.  Remember to replace /dev/sdb with the correct path.
 
+\subsection{Get UUIDs of your hard drive partitions}
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo \codeHighlight{blkid}
+\end{Verbatim}
+blkid prints the UUIDs of your hard drive partitions. It can also be limited to one hard drive or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home  or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
+
 \section{Password generation}
 \label{Password generation}
 \subsection{Numeric passwords}
@@ -413,6 +414,47 @@ Since you most likely don't want to type this every time, you can alias it in yo
 
 \subsection{GRUB boots into black screen}
 Occasionally some graphics cards have issues booting into GRUB's framebuffer, which results in a black screen.  If you run into this issue, you can try adding \textbf{nomodeset} to the end of your kernel boot line.  GRUB2 and legacy GRUB have different ways to edit entries, but the bottom of the GRUB menu should have instructions.
+
+\subsection{Reinstall GRUB using chroot}
+chroot lets you work on an Linux installation that is currently not bootable. This can happen when you set up a dual boot system and install Windows after Linux. Sometimes it happens that you have no other option to reinstall Windows to fix it. \\ Firstly, boot into a live Linux, e.g. the latest Ubuntu live CD, then open the Terminal.
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo mount /dev/sda2 /mnt 
+
+sudo mount -o bind /dev /mnt/dev
+ 
+sudo mount -o bind /sys /mnt/sys 
+
+sudo mount -t proc /proc /mnt/proc
+ 
+sudo \codeHighlight{chroot} /mnt /bin/bash
+ 
+grub-install /dev/sda 
+
+exit \end{Verbatim}
+Replace sda2 with your / partition. In Ubuntu live mode, sudo will not prompt for a password. This example works only if you have no seperate /boot partition. If you have not located your /home on a seperate partition, it can happen that you are not the owner of your /home/user directory any more, which leads to problems. You can easily fix that using this command after booting into the installed Linux:
+\begin{verbatim}
+sudo chown -hR user:user /home/user
+\end{verbatim}
+If you have a seperate /boot partition, the command list is as follows:
+\begin{verbatim}
+sudo mount /dev/sda2 /mnt
+
+sudo mount /dev/sda3 /mnt/boot 
+
+sudo mount -o bind /dev /mnt/dev
+
+sudo mount -o bind /sys /mnt/sys
+
+sudo mount -t proc /proc /mnt/proc
+
+sudo \codeHighlight{chroot} /mnt /bin/bash
+
+cp /proc/mounts /etc/mtab
+
+grub-install /dev/sda
+
+exit \end{verbatim}
+Again, you have to replace sda2 and sda3 with your actual partitions. 
 
 \section{Video tips}
 \subsection{ffmpeg}
