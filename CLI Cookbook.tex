@@ -48,7 +48,7 @@ Whereis and which both return the path to the main executable of the command.
 \codeHighlight{sed}
 Example: sed ‘s/[pP][iI][nN][kK] [fF][lL][oO][yY][dD]/Pink Floyd/g’
 \end{Verbatim}
-Sed can be used for word replacement in files.  The example supplied will consolidate all spelling variations of Pink Floyd.  It's also frequently used to unify file types (i.e. .JPG .jpeg .jpg into one uniform extension).
+Sed can be used for word replacement in files. The example supplied will consolidate all spelling variations of Pink Floyd. It's also frequently used to unify file types (i.e. .JPG .jpeg .jpg into one uniform extension).
 
 \subsection{ls}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -62,7 +62,7 @@ This combination has ls list all files (including hidden files and directories),
 \codeHighlight{convert}
 Example: convert *.jpg output.pdf
 \end{Verbatim}
-Convert is a powerful command-line tool that helps to convert between formats.  However, it can also be used to merge files together.  The example above takes all files that end in .jpg and merges them into a single PDF.  The reader who supplied this notes that they find it most useful when scanning large numbers of files.
+Convert is a powerful command-line tool that helps to convert between formats. However, it can also be used to merge files together. The example above takes all files that end in .jpg and merges them into a single PDF. The reader who supplied this notes that they find it most useful when scanning large numbers of files.
 
 \subsection{Search with updatedb and locate}
 \label{locate}
@@ -71,7 +71,7 @@ Convert is a powerful command-line tool that helps to convert between formats.  
 
 \codeHighlight{locate} search term
 \end{Verbatim}
-The locate command quickly searches the database for items matching the search terms supplied.  It won't always find the file you're looking for, but is faster than find if you don't know what folder it's in.
+The locate command quickly searches the database for items matching the search terms supplied. It won't always find the file you're looking for, but is faster than find if you don't know what folder it's in.
 
 \subsection{Search with find}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -81,7 +81,7 @@ The locate command quickly searches the database for items matching the search t
 
 \codeHighlight{find }\$path\codeHighlight{ -iname "}search term\codeHighlight{"}
 \end{Verbatim}
-Replace \textbf{search term} with your search terms.  Find will also search from the specified path onwards (for current path, just use '\textbf{.}' minus the quotes).  I wouldn't recommend using find to search through your directory from root ('/'), as it could take forever.  Much better to use locate there.  The only difference between -name and -iname is that -iname is case insensitive, which means .JPG and .jpg are treated as the same text.
+Replace \textbf{search term} with your search terms.  Find will also search from the specified path onwards (for current path, just use '\textbf{.}' minus the quotes). I wouldn't recommend using find to search through your directory from root ('/'), as it could take forever. Much better to use locate there.  The only difference between -name and -iname is that -iname is case insensitive, which means .JPG and .jpg are treated as the same text.
 
 \subsection{Search every file recursively}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -94,12 +94,12 @@ The find command searches all files (-type f) in the current directory and below
 \codeHighlight{soffice --headless --nologo --convert-to odp *.ppt}
 # set source and destination formats as desire
 \end{Verbatim}
-Similar to the convert command, this can convert between file formats (any formats you can use/create in LibreOffice).  The first two arguments are to hide the LibreOffice interface, and the third argument tells it what to do.  The reader who supplied this command mentioned that they found it useful for converting the PowerPoint slides they received from their professors to PDF or ODP.  However, converting the latest Microsoft formats (.docx, .pptx, etc.) can/will result in formatting issues in LibreOffice 3.5 in Ubuntu 12.04. as well as in LibreOffice 4.1 in Ubuntu 13.04. Ubuntu 12.10 has not been tested yet.
+Similar to the convert command, this can convert between file formats (any formats you can use/create in LibreOffice). The first two arguments are to hide the LibreOffice interface, and the third argument tells it what to do.  The reader who supplied this command mentioned that they found it useful for converting the PowerPoint slides they received from their professors to PDF or ODP. However, converting the latest Microsoft formats (.docx, .pptx, etc.) can/will result in formatting issues in LibreOffice 3.5 in Ubuntu 12.04, as well as in LibreOffice 4.1 in Ubuntu 13.04. Ubuntu 12.10 has not been tested yet.
 
 \section{Packages}
 \label{Packages}
 \subsection{Debian based systems}
-All the following commands are for Debian based systems (which is what Ubuntu is).  In the case of trusted keys - not all Debian systems have them. 
+All the following commands are for Debian based systems (which is what Ubuntu is). In the case of trusted keys - not all Debian systems have them. 
 \subsubsection{Remove leftover configuration files from removed packages}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{sudo dpkg --purge `dpkg -l | grep ^rc | awk '\{print \$2\}'`}
@@ -110,28 +110,33 @@ All the following commands are for Debian based systems (which is what Ubuntu is
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{COLUMNS=200 dpkg-query -l > packages_list.list}
 \end{Verbatim}
-COLUMNS is a variable being passed to dpkg-query, and isn't a mandatory part of the command.  In this case, however, it helps to format the results for the resulting text file.  It essentially queries dpkg for a list of installed packages.  The resulting list will contain package names, versions and descriptions. Good for looking up what’s installed and what is done by which package. Alphabetical order.
+COLUMNS is a variable being passed to dpkg-query, and isn't a mandatory part of the command.  In this case, however, it helps to format the results for the resulting text file. It essentially queries dpkg for a list of installed packages. The resulting list will contain package names, versions and descriptions. Good for looking up what’s installed and what is done by which package. Alphabetical order.
 
 \subsubsection{Create a list of installed packages for restoring your system}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}' > packages.list}
+\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}'
+ > packages.list}
 \end{Verbatim}
-This list only contains only package names of installed packages. One per line. It is therefore suitable for re-installing all packages from the command line (see below). Alphabetical order.
+This list contains only package names of installed packages. One per line. It is therefore suitable for re-installing all packages from the command line (see below). Alphabetical order.
 
-\subsubsection{Store package state in a file}
+\subsubsection{Create a list of automatically installed packages}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{apt-mark showauto > package-states-auto}
 \end{Verbatim}
-This command generates a list containing the state of each installed package, and saves it to the file package-states-auto.  This is needed for restoring an installation properly.
+This command generates a list containing the names of all packages that have been installed automatically due to dependency reasons, and saves it to the file package-states-auto.  This is needed for restoring an installation properly.
 
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
 \subsubsection{Restore a list of packages}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}' > packages.list}
+\codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}'
+ > packages.list}
 \end{Verbatim}
 
 =======
 >>>>>>> pr/2
+>>>>>>> upstream/master
 \subsubsection{Save all software sources to one file}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{find /etc/apt/sources.list -type f -name '*.list' -exec bash -c 'echo }
@@ -240,19 +245,19 @@ This long process will result in having your old packages installed into a new s
 
 \codeHighlight{sudo gdisk -l} # for GPT (UEFI) systems
 \end{Verbatim}
-These commands will print a list of all hard drives and their partitioning structure.  If you're unsure of which command to use, fdisk is probably for you.  Don't worry - no harm running the wrong command, and it will prompt you that you ought to be using the other command.
+These commands will print a list of all hard drives and their partitioning structure. If you're unsure of which command to use, fdisk is probably for you. Don't worry - no harm running the wrong command, and it will prompt you that you ought to be using the other command.
 
 \subsection{Back up MBR (Master Boot Record)}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{sudo dd if=/dev/hda of=mbr_backup bs=512 count=1}
 \end{Verbatim}
-This command runs dd on the "input file" (if) of /dev/hda (replace this with the disk you want to back up the MBR of \- most likely /dev/sda).  It then reads the first 512 bits (bs=512 \- size count=1 - how many chunks of size 512 to read) and saves them in the "output file" (of) mbr\textunderscore backup.  If you're running this from a live CD or disk, remember to save/move the output file to a persistent drive (i.e. hard drive, USB stick, etc.).  Otherwise it will be lost the moment you reboot.
+This command runs dd on the "input file" (if) of /dev/hda (replace this with the disk you want to back up the MBR of \- most likely /dev/sda). It then reads the first 512 bits (bs=512 \- size count=1 - how many chunks of size 512 to read) and saves them in the "output file" (of) mbr\textunderscore backup. If you're running this from a live CD or disk, remember to save/move the output file to a persistent drive (i.e. hard drive, USB stick, etc.). Otherwise it will be lost the moment you reboot.
 
 \subsection{Back up boot code}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{dd if=/dev/hda of=bootcode_backup bs=446 count=1}
 \end{Verbatim}
-Similar as with the MBR command, this command backs up a section of the hard drive.  In this case, it backs up only the section of the hard drive that contains boot code.
+Similar as with the MBR command, this command backs up a section of the hard drive. In this case, it backs up only the section of the hard drive that contains boot code.
 
 \subsection{Display detailed information on your Hard Disk}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -278,7 +283,7 @@ If it's wrong, do the following:
 \codeHighlight{sudo sfdisk }/dev/sdb\codeHighlight{ < }sdb.old
 Then retry the gedit step.
 \end{Verbatim}
-I'm honestly of two minds about this suggestion.  On one hand, I can accept doing this on usb sticks - though I don't really think you'll need more than one partition on any but the largest.  Doing this on any kind of actual hard drive seems extremely dangerous as countless things could go wrong.  An out of sequence partition table isn't a problem in any way, so only risk this \underline{\textbf{\textit{if you can't possibly live with it}}}
+I'm honestly of two minds about this suggestion.  On one hand, I can accept doing this on usb sticks - though I don't really think you'll need more than one partition on any but the largest.  Doing this on any kind of actual hard drive seems extremely dangerous as countless things could go wrong. An out of sequence partition table isn't a problem in any way, so only risk this \underline{\textbf{\textit{if you can't possibly live with it}}}
 
 \subsection{Fill hard disk with zeros}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -286,7 +291,7 @@ I'm honestly of two minds about this suggestion.  On one hand, I can accept doin
 \codeHighlight{dd if=/dev/zero of=}/dev/sdb \codeHighlight{bs=64k}
 \textbf{BE CAREFUL!!!}
 \end{Verbatim}
-This command can be extremely dangerous to use if you're not sure what you're doing.  It writes to the disk and fills it with zeros, effectively wiping the hard drive.  For the security-conscious of you, doing this a couple of times on a drive before throwing it away/giving it away, it will make it much more difficult to restore data from the drive.  It's best used in conjunction with the following command.  Be sure to replace /sda/sdb with the correct path.
+This command can be extremely dangerous to use if you're not sure what you're doing. It writes to the disk and fills it with zeros, effectively wiping the hard drive.  For the security-conscious of you, doing this a couple of times on a drive before throwing it away/giving it away, it will make it much more difficult to restore data from the drive. It's best used in conjunction with the following command. Be sure to replace /sda/sdb with the correct path.
 
 \subsection{Fill hard drive with random data}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -294,13 +299,13 @@ This command can be extremely dangerous to use if you're not sure what you're do
 \codeHighlight{dd if=/dev/urandom of=}/dev/sdb
 \textbf{BE CAREFUL!!!}
 \end{Verbatim}
-This command is extremely dangerous to use blindly without understanding what you're doing.  This is because, similar to the previous command, it fills the hard drive with data.  Instead of zeros, it instead uses random data.  The reader who submitted this code mentions as well that they do this with old drives before selling them.  They also mention that their preference is to re-format them as \textbf{NTFS} at the end as well.  Remember to replace /dev/sdb with the correct path.
+This command is extremely dangerous to use blindly without understanding what you're doing. This is because, similar to the previous command, it fills the hard drive with data. Instead of zeros, it instead uses random data. The reader who submitted this code mentions as well that they do this with old drives before selling them. They also mention that their preference is to re-format them as \textbf{NTFS} at the end as well.  Remember to replace /dev/sdb with the correct path.
 
 \subsection{Get UUIDs of your hard drive partitions}
 \begin{Verbatim}[commandchars=\\\{\}]
 sudo \codeHighlight{blkid}
 \end{Verbatim}
-blkid prints the UUIDs of your hard drive partitions. It can also be limited to one hard drive or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home  or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
+blkid prints the UUIDs of your hard drive partitions. It can also be limited to one hard drive or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
 
 \section{Password generation}
 \label{Password generation}
@@ -314,7 +319,7 @@ This command generates a single 32-character long numeric password.
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{pwgen -sy 32 64}
 \end{Verbatim}
-This command generates 64 passwords of a 32-character length that contains letters, numbers and special characters.  The reason why we show how to generate multiple ones at first is because it can be useful when setting up a large number of networks at once.  \textbf{pwgen is not installed by default}
+This command generates 64 passwords of a 32-character length that contains letters, numbers and special characters. The reason why we show how to generate multiple ones at first is because it can be useful when setting up a large number of networks at once.  \textbf{pwgen is not installed by default}
 
 \section{wget}
 \subsection{Make an offline copy of a website}
@@ -323,7 +328,7 @@ This command generates 64 passwords of a 32-character length that contains lette
 \codeHighlight{wget --user-agent="Mozilla/5.0 (X11; U; Linux i686; de; rv:1.9b5)}
 \codeHighlight{Gecko/2008050509 Firefox/3.0b5" -r -k -E -l 8} http://example.com
 \end{Verbatim}
-This command uses wget to impersonate Firefox's user agent, and then runs then runs recursively through the website (-r defaults to 5 levels, and -l sets the depth, to 8 in this case).  The -k switch tells wget to fix the links to make them suitable for local viewing, -E tells it to adjust extensions (i.e. change .asp to .html).  Don't forget to change the URL!
+This command uses wget to impersonate Firefox's user agent, and then runs recursively through the website (-r defaults to 5 levels, and -l sets the depth, to 8 in this case). The -k switch tells wget to fix the links to make them suitable for local viewing, -E tells it to adjust extensions (i.e. change .asp to .html).  Don't forget to change the URL!
 
 \subsection{Download a file (with the ability to continue)}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -335,17 +340,18 @@ wget grabs the supplied link and downloads the file - in the example it would do
 \label{Display hardware information}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{lshw -C} SECTION
-Example: sudo lshw -C network # lists all information about networking devices
-Formatting example (HTML): sudo lshw -html > hardware.html #creates an html 
-page with the lshw results
+Example: sudo lshw -C network
+# lists all information about networking devices
+Formatting example (HTML): sudo lshw -html > hardware.html
+#creates an html page with the lshw results
 
 \codeHighlight{lsusb}
-Example: sudo lsusb -v | more # lists verbose output and drops it into the more 
-tool for easy reading.
+Example: sudo lsusb -v | more
+# lists verbose output and drops it into the more tool for easy reading.
 
 \codeHighlight{lspci -nn}
-# -nn prints also device and vendor id. useful if you’re looking for a driver, 
-e.g. for WLAN, using databases at ubuntuusers.de or other
+# -nn prints also device and vendor id. Useful if you’re looking
+for a driver, e.g. for WLAN, using databases at ubuntuusers.de or other
 
 \codeHighlight{dmesg | grep KEYWORD}
 
@@ -355,7 +361,7 @@ e.g. for WLAN, using databases at ubuntuusers.de or other
 
 \codeHighlight{dmidecode -t TYPENUMBER}
 \end{Verbatim}
-Logically, lsusb prints information about USB devices, and lspci lists information about PCI devices (system bus).  Lshw lists information about almost all hardware in your computer.  Dmesg prints out system messages, ifconfig prints hardware information about ethernet and wireless interfaces, and iwconfig display information on wireless information (such as ESSID).  Dmidecode dumps a computer's DMI (sometimes called SMBIOS) table contents into a human-readable format.  SMBIOS stores specific information about the computer.
+Logically, lsusb prints information about USB devices, and lspci lists information about PCI devices (system bus). Lshw lists information about almost all hardware in your computer. Dmesg prints out system messages, ifconfig prints hardware information about ethernet and wireless interfaces, and iwconfig display information on wireless information (such as ESSID). Dmidecode dumps a computer's DMI (sometimes called SMBIOS) table contents into a human-readable format. SMBIOS stores specific information about the computer.
 
 The name for the SECTION (called class by lshw) can be found by running either of the following commands:
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -389,7 +395,7 @@ This command modifies a user and adds them to the group specific as groupname.
 
 \subsection{Create aliases in your shell}
 \label{aliases}
-This applies to almost any shell, though the configuration file will be different.  I will assume the use of the Bourne Again Shell (Bash) and therefore the file .bashrc.
+This applies to almost any shell, though the configuration file will be different. I will assume the use of the Bourne Again Shell (Bash) and therefore the file .bashrc.
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{vim ~/.bashrc}
 
@@ -400,7 +406,7 @@ This alias will then be active in any new shell you open.
 If you want to use it in a currently open shell, run this:
 \codeHighlight{source ~/.bashrc}
 \end{Verbatim}
-After that, just type whatever the name of your alias was, and it will run the specified command.  Remember to replace \$name and command with the actual name you'd like the alias to have, and the command you want it to run.
+After that, just type whatever the name of your alias was, and it will run the specified command. Remember to replace \$name and command with the actual name you'd like the alias to have, and the command you want it to run.
 
 \subsection{Check who opened which ports}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -410,7 +416,7 @@ This is a fairly straightforward command - it lists users and the ports the have
 
 \section{Miscellaneous fixes}
 \subsection{Upside down webcam in Skype}
-Before using this command, you should find the path of your v4l1compat.so file.  For information on how to find it, see \hyperref[locate]{\ref*{locate}} (using updatedb and locate)
+Before using this command, you should find the path of your v4l1compat.so file. For information on how to find it, see \hyperref[locate]{\ref*{locate}} (using updatedb and locate)
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{bash -c 'LD_PRELOAD=}/usr/lib/i386-linux-gnu/libv4l/v4l1compat.so \codeHighlight{skype'}
 
@@ -424,8 +430,8 @@ Since you most likely don't want to type this every time, you can alias it in yo
 Occasionally some graphics cards have issues booting into GRUB's framebuffer, which results in a black screen.  If you run into this issue, you can try adding \textbf{nomodeset} to the end of your kernel boot line.  GRUB2 and legacy GRUB have different ways to edit entries, but the bottom of the GRUB menu should have instructions.
 
 \subsection{Reinstall GRUB using chroot}
-chroot lets you work on an Linux installation that is currently not bootable. This can happen when you set up a dual boot system and install Windows after Linux. Sometimes it happens that you have no other option to reinstall Windows to fix it. \\ Firstly, boot into a live Linux, e.g. the latest Ubuntu live CD, then open the Terminal.
-\begin{Verbatim}[commandchars=\\\{\}]
+Chroot lets you work on an Linux installation that is currently not bootable. This can happen when you set up a dual boot system and install Windows after Linux. Sometimes it happens that you have no other option to reinstall Windows to fix it. \\ Firstly, boot into a live Linux, e.g. the latest Ubuntu live CD, then open the Terminal.
+\begin{verbatim}[commandchars=\\\{\}]
 sudo mount /dev/sda2 /mnt 
 
 sudo mount -o bind /dev /mnt/dev
@@ -438,7 +444,8 @@ sudo \codeHighlight{chroot} /mnt /bin/bash
  
 grub-install /dev/sda 
 
-exit \end{Verbatim}
+exit
+\end{verbatim}
 Replace sda2 with your / partition. In Ubuntu live mode, sudo will not prompt for a password. This example works only if you have no seperate /boot partition. If you have not located your /home on a seperate partition, it can happen that you are not the owner of your /home/user directory any more, which leads to problems. You can easily fix that using this command after booting into the installed Linux:
 \begin{verbatim}
 sudo chown -hR user:user /home/user
@@ -461,13 +468,14 @@ cp /proc/mounts /etc/mtab
 
 grub-install /dev/sda
 
-exit \end{verbatim}
+exit 
+\end{verbatim}
 Again, you have to replace sda2 and sda3 with your actual partitions. 
 
 \section{Video tips}
 \subsection{ffmpeg}
 \subsubsection{Record your desktop}
-If you don't mind using a pre-build tool, using recordmydesktop is probably easiest.  However, if you want total control over the recording, you can use ffmpeg
+If you don't mind using a pre-build tool, using recordmydesktop is probably easiest. However, if you want total control over the recording, you can use ffmpeg
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{ffmpeg -f alsa -ac 2 -i hw:0,0 -f x11grab -r 20 -s 1680x1050+0+0 -i :0.0 }
 \codeHighlight{-acodec pcm_s16le -vcodec libx264 -vpre lossless_ultrafast -threads 0 -y }
@@ -480,7 +488,7 @@ If you don't mind using a pre-build tool, using recordmydesktop is probably easi
 \end{Verbatim}
 This command tells ffmpeg that starting from 2 minutes and 23 seconds into the video, to copy out the following 25 seconds (-t 25) from input.foo into output.foo
 
-\subsection{Use vdpau (hardware accelerated decoding in mplayer}
+\subsection{Use vdpau (hardware accelerated decoding in mplayer)}
 Nvidia uses the vdpau library to offload video encoding and decoding to the graphics card.  To use this in mplayer, do the following:
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{mplayer -vo vdpau -vc ffh264vdpau }file
