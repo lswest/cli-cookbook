@@ -656,9 +656,10 @@ At last, we have to check if our fstab contains the proper information; still be
 \begin{Verbatim}[commandchars=\\\{\}]
 #/etc/fstab: static file system information. #
 <file system> <mount point> <type> <options> <dump> <pass>	
-#proc		/proc	      proc   defaults  0      0		
-#/dev/mapper/vg-root UUID=c8d9b9a0-2198-4966-bc3a-39259df6a2c2 / ext4 noatime,errors=remount-ro 0 1  
-/dev/sdb1 UUID=6af425ad-99b8-44a5-9ee1-0349141f9b1f /boot ext3  relatime 0 2
+#proc /proc proc defaults 0 0		
+#/dev/mapper/vg-root UUID=c8d9b9a0-2198-4966-bc3a-39259df6a2c2 / ext4
+noatime,errors=remount-ro 0 1  
+#/dev/sdb1 UUID=6af425ad-99b8-44a5-9ee1-0349141f9b1f /boot ext3 relatime 0 2
 \end{Verbatim}
 Of course, you will have different UUIDs. I recommend using noatime on the thumbdrive as mount option. This will again increase file system performance a bit. But still, the performance will not be as good as with a non-encrypted drive. You can now close the chroot session with:
 \begin{Verbatim}[commandchars=\\\{\}]
