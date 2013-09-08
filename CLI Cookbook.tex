@@ -62,7 +62,7 @@ This combination has ls list all files (including hidden files and directories),
 \codeHighlight{convert}
 Example: convert *.jpg output.pdf
 \end{Verbatim}
-Convert is a powerful command-line tool that helps to convert between formats. However, it can also be used to merge files together. The example above takes all files that end in .jpg and merges them into a single PDF. The reader who supplied this notes that they find it most useful when scanning large numbers of files.
+Convert is a powerful command-line tool that helps to convert between formats. However, it can also be used to merge files together. The example above takes all files that end in .jpg and merges them into a single PDF. The reader who supplied this notes that they find it most useful when scanning large numbers of files. Convert is part of the imagemagick package.
 
 \subsection{Search with updatedb and locate}
 \label{locate}
@@ -81,7 +81,7 @@ The locate command quickly searches the database for items matching the search t
 
 \codeHighlight{find }\$path\codeHighlight{ -iname "}search term\codeHighlight{"}
 \end{Verbatim}
-Replace \textbf{search term} with your search terms.  Find will also search from the specified path onwards (for current path, just use '\textbf{.}' minus the quotes). I wouldn't recommend using find to search through your directory from root ('/'), as it could take forever. Much better to use locate there.  The only difference between -name and -iname is that -iname is case insensitive, which means .JPG and .jpg are treated as the same text.
+Replace \textbf{search term} with your search terms.  Find will also search from the specified path onwards (for current path, just use '\textbf{.}' minus the quotes). I wouldn't recommend using find to search through your directory from root ('/'), as it could take forever. Much better to use locate there. The only difference between -name and -iname is that -iname is case insensitive, which means .JPG and .jpg are treated as the same text.
 
 \subsection{Search every file recursively}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -168,7 +168,7 @@ The way I would recommend restoring the software sources is to copy and paste so
 
 \codeHighlight{pacman -Qqm > pkglist-loc.txt}
 \end{Verbatim}
-The first command creates a list of all officially installed packages (i.e. nothing from the AUR).  The second command creates a list of all locally installed packages.  If you use an AUR manager, copy the install package over along with the backup list - or else make note of the URL so you can wget it later.
+The first command creates a list of all officially installed packages (i.e. nothing from the AUR). The second command creates a list of all locally installed packages. If you use an AUR manager, copy the install package over along with the backup list - or else make note of the URL so you can wget it later.
 
 \subsubsection{Create a local copy of installed packages}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -176,7 +176,7 @@ The first command creates a list of all officially installed packages (i.e. noth
 
 \codeHighlight{sudo pacman -Sc}
 \end{Verbatim}
-The first command will copy the local cached copies of installed packages.  However, pacman stores old copies too, so the second command will remove all the old copies, in case space is an issue.  Most AUR managers offer a similar option of caching files (not necessarily enabled by default).
+The first command will copy the local cached copies of installed packages. However, pacman stores old copies too, so the second command will remove all the old copies, in case space is an issue. Most AUR managers offer a similar option of caching files (not necessarily enabled by default).
 
 \subsubsection{Restoring package installations}
 \begin{enumerate}
@@ -229,7 +229,7 @@ The first command will copy the local cached copies of installed packages.  Howe
 \end{Verbatim}
 The above command installs all packages listed in the local files backup from \hyperref[Arch-installed-packages]{\ref*{Arch-installed-packages} }.
 \end{enumerate}
-This long process will result in having your old packages installed into a new system.  This can help make the occasional re-install infinitely easier.  Or, if you have a system you're completely satisfied with, you can then move it to a new system.  The ArchWiki has plenty of information for those of you trying to move more than just the installed packages.
+This long process will result in having your old packages installed into a new system. This can help make the occasional re-install infinitely easier. Or, if you have a system you're completely satisfied with, you can then move it to a new system. The ArchWiki has plenty of information for those of you trying to move more than just the installed packages.
 
 \section{Hard drive commands}
 \label{Hard drive commands}
@@ -277,7 +277,7 @@ If it's wrong, do the following:
 \codeHighlight{sudo sfdisk }/dev/sdb\codeHighlight{ < }sdb.old
 Then retry the gedit step.
 \end{Verbatim}
-I'm honestly of two minds about this suggestion.  On one hand, I can accept doing this on usb sticks - though I don't really think you'll need more than one partition on any but the largest.  Doing this on any kind of actual hard drive seems extremely dangerous as countless things could go wrong. An out of sequence partition table isn't a problem in any way, so only risk this \underline{\textbf{\textit{if you can't possibly live with it}}}
+I'm honestly of two minds about this suggestion.  On one hand, I can accept doing this on usb sticks - though I don't really think you'll need more than one partition on any but the largest.  Doing this on any kind of actual hard drive seems extremely dangerous as countless things could go wrong. An out of sequence partition table isn't a problem in any way, so only risk this \underline{\textbf{\textit{if you can't possibly live with it.}}}
 
 \subsection{Fill hard disk with zeros}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -299,7 +299,7 @@ This command is extremely dangerous to use blindly without understanding what yo
 \begin{Verbatim}[commandchars=\\\{\}]
 sudo \codeHighlight{blkid}
 \end{Verbatim}
-blkid prints the UUIDs of your hard drive partitions. It can also be limited to one hard drive or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
+Blkid prints the UUIDs of your hard drive partitions. It can also be limited to one hard drive or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
 
 \section{Password generation}
 \label{Password generation}
@@ -307,13 +307,13 @@ blkid prints the UUIDs of your hard drive partitions. It can also be limited to 
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{makepasswd --string 0123456789 --chars 32}
 \end{Verbatim}
-This command generates a single 32-character long numeric password.
+This command generates a single 32-character long numeric password. Makepasswd is not always installed by default.
 
 \subsection{Alphanumeric passwords with special characters}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{pwgen -sy 32 64}
 \end{Verbatim}
-This command generates 64 passwords of a 32-character length that contains letters, numbers and special characters. The reason why we show how to generate multiple ones at first is because it can be useful when setting up a large number of networks at once.  \textbf{pwgen is not installed by default}
+This command generates 64 passwords of a 32-character length that contains letters, numbers and special characters. The reason why we show how to generate multiple ones at first is because it can be useful when setting up a large number of networks at once.  \textbf{Pwgen is not installed by default.}
 
 \section{wget}
 \subsection{Make an offline copy of a website}
@@ -326,9 +326,9 @@ This command uses wget to impersonate Firefox's user agent, and then runs recurs
 
 \subsection{Download a file (with the ability to continue)}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{wget -c }http://example.com
+\codeHighlight{wget -c }http://example.com/file.ext
 \end{Verbatim}
-wget grabs the supplied link and downloads the file - in the example it would download the index.html file, and if you give it a file link, it will download the file.  The -c switch lets you continue a download if it's interrupted.
+Wget grabs the supplied link and downloads the file - in the example it would download the index.html file, and if you give it a file link, it will download the file.  The -c switch lets you continue a download if it's interrupted.
 
 \section{Display hardware information}
 \label{Display hardware information}
@@ -355,7 +355,7 @@ for a driver, e.g. for WLAN, using databases at ubuntuusers.de or other
 
 \codeHighlight{dmidecode -t TYPENUMBER}
 \end{Verbatim}
-Logically, lsusb prints information about USB devices, and lspci lists information about PCI devices (system bus). Lshw lists information about almost all hardware in your computer. Dmesg prints out system messages, ifconfig prints hardware information about ethernet and wireless interfaces, and iwconfig display information on wireless information (such as ESSID). Dmidecode dumps a computer's DMI (sometimes called SMBIOS) table contents into a human-readable format. SMBIOS stores specific information about the computer.
+Logically, lsusb prints information about USB devices, and lspci lists information about PCI devices (system bus). Lshw lists information about almost all hardware in your computer. Dmesg prints out system messages, ifconfig prints hardware information about ethernet and wireless interfaces, and iwconfig display information on wireless connections (such as ESSID). Dmidecode dumps a computer's DMI (sometimes called SMBIOS) table contents into a human-readable format. SMBIOS stores specific information about the computer.
 
 The name for the SECTION (called class by lshw) can be found by running either of the following commands:
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -406,7 +406,7 @@ After that, just type whatever the name of your alias was, and it will run the s
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{sudo netstat -lntup}
 \end{Verbatim}
-This is a fairly straightforward command - it lists users and the ports the have opened.
+This is a fairly straightforward command - it lists users and the ports they have opened.
 
 \section{Miscellaneous fixes}
 \subsection{Upside down webcam in Skype}
@@ -490,17 +490,17 @@ Nvidia uses the vdpau library to offload video encoding and decoding to the grap
 Replace the word "file" with the path to the video you want to play.
 
 \section{Encrypted thumbdrive installation}
-This chapter shows how to create a fully encrypted, persistent installation of Linux on a USB thumbdrive, using the command line a lot. This is a larger project, as it takes a lot of time. It is recommended that you already have some experience in normal installation and using the command line. The procedure below has been tested with Backtrack 5R3, Ubuntu 10.04 LTS and Backbox Linux 3.05, all 32bit. It should also work similarily with Ubuntu 12.04 LTS as well as Debian Wheezy and other distros, but this is still to be tested. In this tutorial I will assume you have a Debian based distro.
+By the time I write this, everyone is talking and writing about encryption and keeping one's personal data save. This chapter shows how to create a fully encrypted, persistent installation of Linux on a USB thumbdrive, using the command line a lot. This is a larger project, as it takes a lot of time. It is recommended that you already have some experience in normal installation and using the command line. The procedure below has been tested with Backtrack 5R3, Ubuntu 10.04 LTS and Backbox Linux 3.05, all 32bit. It should also work similarily with Ubuntu 12.04 LTS as well as Debian Wheezy and other distros, but this is still to be tested. In this tutorial I will assume you have a Debian based distro.
 
-In Ubuntu, you can easily have encrypted /home and swap on your laptop by just checking one box during the installation process. But this tutorial takes paranoia to a new level: Firstly, everthing exept the /boot partition is encrypted. Secondly, the drive is removeable. So you even can put it in a safe. Should be even a bit more theft proof.
+In Ubuntu, you can easily have encrypted /home and swap on your laptop by just checking one box during the installation process. But this tutorial takes paranoia to a new level: Firstly, everthing exept the /boot partition is going to be encrypted. Secondly, the drive is removeable. So you even can put it in a safe. Should be even a bit more theft proof.
 
 As Ubuntu recognizes new hardware at each startup, you can even use the thumbdrive we create below on several machines.
 
-At last, I recommend not to create the encrypted drive on your productive machine. As we perform hard disk operations, you can easily break your system by misspelling a command. Use a spare computer or a less important one, if you have one.
+At last, I recommend not to create the encrypted drive on your productive machine. As we perform hard disk operations, you can easily break your system by misspelling a command. Use a spare computer or a less important one, if you have one. We will take no responsibilty for data loss resulting from the application of this tutorial.
 
 \subsection{What you need to start}
 \begin{enumerate}
-\item A USB thumbdrive, at least 16GB. I recommend 32GB to have more space for your data, but of course you can use even larger ones if you need more space in your /home. 8GB may be sufficient for the installation of Ubuntu, for instance, but you quickly run out of space if you really use the stick, save some larger files and install some more software.
+\item A USB thumbdrive, at least 16GB. I recommend 32GB to have more space for your data, but of course you can use an even larger one if you need more space in your /home. 8GB may be sufficient for the installation of Ubuntu, for instance, but you quickly run out of space if you really use the stick, save some larger files and install some more software.
 \item A live Linux, best is the Linux you want to install on the destination thumbdrive. You can use a distro on a second thumb drive (e.g. 2GB) or a DVD. Last time I created the encrypted boot stick I used Backbox Linux.
 \item Working internet connection.
 \end{enumerate}
@@ -510,10 +510,56 @@ At last, I recommend not to create the encrypted drive on your productive machin
 Sometimes you have to select your CD/DVD drive or thumbdrive as primary boot device in your BIOS. Usually, this step is not much of a problem. The latest live distros recognize a lot of different hardware, so booting usually does not go wrong. If it does, you can always try another distro or some boot parameters. You can find help on those problems on the community pages of your distro.
 
 \subsubsection{Get the internet connection working}
-This is also not much of a problem with new distros. Operating systems like Ubuntu usually make it work out of the box. Wired connection will default to DHCP. For Wifi, you usually just have to select the network, hand your system the Key and click connect. For some newer Wifi cards it can be necessary to install e.g. the package linux-firmware-nonfree first or do something else. If any problems occur, the community of your chosen distro can help you.
+This is also not much of a problem with new distros. Operating systems like Ubuntu usually make it work out of the box. Wired connection will default to DHCP. For Wifi, you usually just have to select the network, hand your system the key and click "connect". For some newer Wifi cards it can be necessary to install e.g. the package linux-firmware-nonfree first or do something else. If any problems occur, the community of your chosen distro can help you.
 
 \subsubsection{Partition your thumbdrive}
-Pick your partitioner of choice. Gparted does a good job under Ubuntu, but of course it can be done with fdisk on the command line as well. The single steps with fdisk will follow in a later version of this document. You need one /boot partition, that is not going to be encrypted. I recommend creating a partition of about 2GB and formatting it to ext3. The rest of the thumbdrive should be a logical partition in an extended one. You don't have to format that second partition now. We will create the encrypted volume there later. Make sure that the first partition is set active. I don't know how to do that with gparted, but it's easily done with fdisk as follows:
+Pick your partitioner of choice. Gparted does a good job under Ubuntu, but of course it can be done with fdisk on the command line as well. You need one /boot partition, that is not going to be encrypted. I recommend creating a partition of about 2GB and formatting it to ext3. The rest of the thumbdrive should be a logical partition in an extended one. You don't have to format that second partition now. We will create the encrypted volume there later. With fsdisk, the commands are as listed below:
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo fdisk /dev/sdb
+
+# delete existing parttions, maybe more than one
+d [enter]
+
+# create first partition
+n [enter]
+
+p [enter]
+
+1 [enter]
+
+[enter]
+
++2048M [enter]
+
+# create extended partition
+n [enter]
+
+e [enter]
+
+2 [enter]
+
+[enter]
+
+[enter]
+
+# create logical partition
+n [enter]
+
+l [enter]
+
+[enter]
+
+[enter]
+
+# set the first partition as ext3
+t [enter]
+
+1 [enter]
+
+83 [enter] 
+\end{Verbatim}
+
+Make sure that the first partition is set active. I don't know how to do that with gparted, but it's easily done with fdisk as follows:
 \begin{Verbatim}[commandchars=\\\{\}]
 sudo fdisk /dev/sdb
 
@@ -543,7 +589,7 @@ dd if=/dev/urandom of=/dev/sdb5
 Due to sdb being our thumbdrive, the second partition is called sdb5 because it's the first logical one.
 
 \subsubsection{Set up encryption}
-The following command will set up encryption on our installation partition. I think the selected options are a good trade off between performance and security.
+The following command will set up encryption on our installation partition. I think the selected options are a good trade-off between performance and security.
 \begin{Verbatim}[commandchars=\\\{\}]
 cryptsetup -y --cipher aes-xts-plain --key-size 512 luksFormat /dev/sdb5
 \end{Verbatim}
@@ -608,16 +654,19 @@ pvcrypt /dev/disk/by-uuid/uuid-from-above\t none \t luks
 \end{Verbatim}
 At last, we have to check if our fstab contains the proper information; still being in the chroot environment. Open /etc/fstab in your favourite editor. The file should look like that:
 \begin{Verbatim}[commandchars=\\\{\}]
- #/etc/fstab: static file system information. #
-		 <file system> <mount point> <type> <options> <dump> <pass>	
-		  #proc		/proc	      proc   defaults  0      0		
-		  #/dev/mapper/vg-root UUID=c8d9b9a0-2198-4966-bc3a-39259df6a2c2 / ext4 noatime,errors=remount-ro 0 1  
-		  /dev/sdb1 UUID=6af425ad-99b8-44a5-9ee1-0349141f9b1f /boot ext3  relatime 0 2
+#/etc/fstab: static file system information. #
+<file system> <mount point> <type> <options> <dump> <pass>	
+#proc		/proc	      proc   defaults  0      0		
+#/dev/mapper/vg-root UUID=c8d9b9a0-2198-4966-bc3a-39259df6a2c2 / ext4 noatime,errors=remount-ro 0 1  
+/dev/sdb1 UUID=6af425ad-99b8-44a5-9ee1-0349141f9b1f /boot ext3  relatime 0 2
 \end{Verbatim}
-Of course, you will have different UUIDs. I recommend using noatime on the thumbdrive as mount option. This will again increase file system performance a bit. But still, the performance will not be as good as with a non-encrypted drive.
+Of course, you will have different UUIDs. I recommend using noatime on the thumbdrive as mount option. This will again increase file system performance a bit. But still, the performance will not be as good as with a non-encrypted drive. You can now close the chroot session with:
+\begin{Verbatim}[commandchars=\\\{\}]
+exit
+\end{Verbatim}
 
-\subsubsection{Boot into the incrypted sytem}
-Congratulations, you're done with the set up! You can now restart, select your thumbdrive as boot device and test the installtion. If the boot process seems to be stuck, check the ttys (Alt+F1 and so on). One will prompt for your luks passphrase. After the system is up, you can install your favourite software, e.g. gnunet, i2p, tor and other stuff you need and start using your fully encrypted sytem. Have fun!
+\subsubsection{Boot into the encrypted sytem}
+Congratulations, you're done with the set up! You can now restart, select your thumbdrive as boot device and test the installtion. If the boot process seems to be stuck, check the ttys (ctrl+alt+F1 and so on). One will prompt for your luks passphrase. After the system is up, you can install your favourite software, e.g. gnunet, i2p, tor and other stuff you need and start using your fully encrypted sytem. Have fun!
 
 \section{Useful Links}
 \begin{itemize}
