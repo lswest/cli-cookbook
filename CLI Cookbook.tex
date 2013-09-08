@@ -125,18 +125,12 @@ This list contains only package names of installed packages. One per line. It is
 \end{Verbatim}
 This command generates a list containing the names of all packages that have been installed automatically due to dependency reasons, and saves it to the file package-states-auto.  This is needed for restoring an installation properly.
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 \subsubsection{Restore a list of packages}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}'
  > packages.list}
 \end{Verbatim}
 
-=======
->>>>>>> pr/2
->>>>>>> upstream/master
 \subsubsection{Save all software sources to one file}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{find /etc/apt/sources.list -type f -name '*.list' -exec bash -c 'echo }
@@ -430,7 +424,7 @@ Since you most likely don't want to type this every time, you can alias it in yo
 Occasionally some graphics cards have issues booting into GRUB's framebuffer, which results in a black screen.  If you run into this issue, you can try adding \textbf{nomodeset} to the end of your kernel boot line.  GRUB2 and legacy GRUB have different ways to edit entries, but the bottom of the GRUB menu should have instructions.
 
 \subsection{Reinstall GRUB using chroot}
-Chroot lets you work on an Linux installation that is currently not bootable. This can happen when you set up a dual boot system and install Windows after Linux. Sometimes it happens that you have no other option to reinstall Windows to fix it. \\ Firstly, boot into a live Linux, e.g. the latest Ubuntu live CD, then open the Terminal.
+Chroot lets you work on an Linux installation that is currently not bootable. This can happen when you set up a dual boot system and install Windows after Linux. Sometimes it happens that you have no other option than reinstalling Windows to fix it. \\ Firstly, boot into a live Linux, e.g. the latest Ubuntu live CD, then open the Terminal.
 \begin{Verbatim}[commandchars=\\\{\}]
 sudo mount /dev/sda2 /mnt 
 
@@ -494,6 +488,135 @@ Nvidia uses the vdpau library to offload video encoding and decoding to the grap
 \codeHighlight{mplayer -vo vdpau -vc ffh264vdpau }file
 \end{Verbatim}
 Replace the word "file" with the path to the video you want to play.
+
+\section{Encrypted thumbdrive installation}
+This chapter shows how to create a fully encrypted, persistent installation of Linux on a USB thumbdrive, using the command line a lot. This is a larger project, as it takes a lot of time. It is recommended that you already have some experience in normal installation and using the command line. The procedure below has been tested with Backtrack 5R3, Ubuntu 10.04 LTS and Backbox Linux 3.05, all 32bit. It should also work similarily with Ubuntu 12.04 LTS as well as Debian Wheezy and other distros, but this is still to be tested. In this tutorial I will assume you have a Debian based distro.
+
+In Ubuntu, you can easily have encrypted /home and swap on your laptop by just checking one box during the installation process. But this tutorial takes paranoia to a new level: Firstly, everthing exept the /boot partition is encrypted. Secondly, the drive is removeable. So you even can put it in a safe. Should be even a bit more theft proof.
+
+As Ubuntu recognizes new hardware at each startup, you can even use the thumbdrive we create below on several machines.
+
+At last, I recommend not to create the encrypted drive on your productive machine. As we perform hard disk operations, you can easily break your system by misspelling a command. Use a spare computer or a less important one, if you have one.
+
+\subsection{What you need to start}
+\begin{enumerate}
+\item A USB thumbdrive, at least 16GB. I recommend 32GB to have more space for your data, but of course you can use even larger ones if you need more space in your /home. 8GB may be sufficient for the installation of Ubuntu, for instance, but you quickly run out of space if you really use the stick, save some larger files and install some more software.
+\item A live Linux, best is the Linux you want to install on the destination thumbdrive. You can use a distro on a second thumb drive (e.g. 2GB) or a DVD. Last time I created the encrypted boot stick I used Backbox Linux.
+\item Working internet connection.
+\end{enumerate}
+
+\subsection{Steps to carry out}
+\subsubsection{Boot your live Linux}
+Sometimes you have to select your CD/DVD drive or thumbdrive as primary boot device in your BIOS. Usually, this step is not much of a problem. The latest live distros recognize a lot of different hardware, so booting usually does not go wrong. If it does, you can always try another distro or some boot parameters. You can find help on those problems on the community pages of your distro.
+
+\subsubsection{Get the internet connection working}
+This is also not much of a problem with new distros. Operating systems like Ubuntu usually make it work out of the box. Wired connection will default to DHCP. For Wifi, you usually just have to select the network, hand your system the Key and click connect. For some newer Wifi cards it can be necessary to install e.g. the package linux-firmware-nonfree first or do something else. If any problems occur, the community of your chosen distro can help you.
+
+\subsubsection{Partition your thumbdrive}
+Pick your partitioner of choice. Gparted does a good job under Ubuntu, but of course it can be done with fdisk on the command line as well. The single steps with fdisk will follow in a later version of this document. You need one /boot partition, that is not going to be encrypted. I recommend creating a partition of about 2GB and formatting it to ext3. The rest of the thumbdrive should be a logical partition in an extended one. You don't have to format that second partition now. We will create the encrypted volume there later. Make sure that the first partition is set active. I don't know how to do that with gparted, but it's easily done with fdisk as follows:
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo fdisk /dev/sdb
+
+a [enter]
+
+1 [enter]
+
+w [enter]
+
+\end{Verbatim}
+In this tutorial, sdb is the thumb drive. You may have to change that on your system. You get a good overview of your drives and partitions to find proper name in gparted or by the following command:
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo fdisk -l
+\end{Verbatim}
+
+\subsubsection{Install needed software}
+We need software for logical volume management (lvm) and encryption (luks). You get it installed with:
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo apt-get update && sudo apt-get install hashalot cryptsetup lvm2
+\end{Verbatim}
+
+\subsubsection{Fill the installation partition with random data}
+This step is not necessary, but levels up your paranoia skills. With an encrypted volume in a partition filled with random data, it is very hard to even tell where your data actually reside. This step will take some time, as some GBs of random data have to be written. We can accomplish it with our old friend dd as follows:
+\begin{Verbatim}[commandchars=\\\{\}]
+dd if=/dev/urandom of=/dev/sdb5
+\end{Verbatim}
+Due to sdb being our thumbdrive, the second partition is called sdb5 because it's the first logical one.
+
+\subsubsection{Set up encryption}
+The following command will set up encryption on our installation partition. I think the selected options are a good trade off between performance and security.
+\begin{Verbatim}[commandchars=\\\{\}]
+cryptsetup -y --cipher aes-xts-plain --key-size 512 luksFormat /dev/sdb5
+\end{Verbatim}
+Cryptsetup will ask if you are really sure and state that you will lose all data on the destination partition. If you are sure to have named the correct partition, type uppercase YES. After this, cryptsetup prompts two times for your passphrase. I recommend using a real phrase of at least five random words or even passwords you can remember instead of just a single password. Correct horse battery staple is already taken ;) After cryptsetup has set up encryption, we can open the encrypted partition for the further steps using:
+\begin{Verbatim}[commandchars=\\\{\}]
+cryptsetup luksOpen /dev/sdb5 pvcrypt
+\end{Verbatim}
+Cryptsetup will prompt for your passphrase.
+
+\subsubsection{Create logigal volume}
+The following commands set up the physical volume, volume group and our logical volume for the root partition. The last command sets up an ext4 file system on the newly created logical volume, which we will use later for the installation.
+\begin{Verbatim}[commandchars=\\\{\}]
+pvcreate /dev/mapper/pvcrypt
+
+vgcreate vg /dev/mapper/pvcrypt
+
+lvcreate -n root -l 100%FREE vg
+
+mkfs.ext4 /dev/mapper/vg-root
+
+\end{Verbatim}
+
+\subsubsection{Deactivate journaling}
+This step is also not necessary, but can increase file system performance a bit.
+\begin{Verbatim}[commandchars=\\\{\}]
+tune2fs -o journal_data_writeback /dev/mapper/vg-root
+
+tune2fs -O ^has_journal /dev/mapper/vg-root
+
+e2fsck -f /dev/mapper/vg-root
+\end{Verbatim}
+
+\subsubsection{Install Linux}
+Now you can install Linux on your thumbdrive using the graphical installer provided with the live system. It is important that you select "something else" or "manual partitioning" when asked what to do by the installer. Then you have to select /dev/sdb1 as /boot partition and /mapper/vg-root as / partition (option "mount point"). And you have to select /dev/sdb ans destination drive for the boot loader. This is very important. If you don't select the proper drive you may break your system! When the installation process has finished, click on "continue testing". \textbf{Don't click on restart!} We still have some things to do in the live system to get the encrypted installation working.
+
+\subsubsection{Configure installed system to use lvm and encryption}
+Open a terminal window. We will now configure our new installation using the commands blkid and chroot we got to now above. First, we need the UUID of the encrypted volume. Execute the following and note the UUID:
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo blkid
+\end{Verbatim}
+Next, we use chroot to configure the installed Linux to use lvm and encryption. The commands are as follows:
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo mkdir /mnt/cryptOS
+
+sudo mount /dev/mapper/vg-root /mnt/cryptOS
+
+sudo mount /dev/sdb1 /mnt/cryptOS/boot
+
+chroot /mnt/cryptOS
+
+mount -t proc proc /proc
+
+mount -t sysfs sys /sys
+
+apt-get update
+
+apt-get update && apt-get install hashalot cryptsetup lvm2
+\end{Verbatim}
+Finally, we have to create a file so that our Linux finds and uses the encrypted volume. Open your favourite console editor, e.g. vim or nano, and create the file /etc/crypttab. Do not leave the chroot environment! Save the following line to that file, containing the UUID you noted above:
+\begin{Verbatim}[commandchars=\\\{\}]
+pvcrypt	/dev/disk/by-­‐uuid/uuid-from-above	none		luks
+At last, we have to check if our fstab contains the proper information; still being in the chroot environment. Open /etc/fstab in your favourite editor. The file should look like that:
+\begin{Verbatim}[commandchars=\\\{\}]
+ #/etc/fstab: static file system information. #
+		 <file system> <mount point> <type> <options> <dump> <pass>	
+		  #proc		/proc	      proc   defaults  0      0		
+		  #/dev/mapper/vg-­‐root UUID=c8d9b9a0-­‐2198-­‐4966-­‐bc3a-­‐39259df6a2c2 / ext4 noatime,errors=remount-­‐ro 0 1  
+		  /dev/sdb1 UUID=6af425ad-­‐99b8-­‐44a5-­‐9ee1-­‐0349141f9b1f /boot ext3  relatime 0 2
+\end{Verbatim}
+Of course, you will have different UUIDs. I recommend using noatime on the thumbdrive as mount option. This will again increase file system performance a bit. But still, the performance will not be as good as with a non-encrypted drive.
+
+\subsubsection{Boot into the incrypted sytem}
+Congratulations, you're done with the set up! You can now restart, select your thumbdrive as boot device and test the installtion. If the boot process seems to be stuck, check the ttys (Alt+F1 and so on). One will prompt for your luks passphrase. After the system is up, you can install your favourite software, e.g. gnunet, i2p, tor and other stuff you need and start using your fully encrypted sytem. Have fun!
 
 \section{Useful Links}
 \begin{itemize}
