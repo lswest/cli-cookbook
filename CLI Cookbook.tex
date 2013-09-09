@@ -17,7 +17,7 @@
 \maketitle
 \textbf{Note: Each command in a longer list is separated by a blank line.  All commands on more than one line without a blank line are simply wrapped text - run it as one command! } \\
 You can find this on GitHub: \url{https://github.com/lswest/cli-cookbook}\\
-If you want to contribute - feel free to clone the repository, or open an issue (if you aren't comfortable with LaTeX)
+If you want to contribute - feel free to clone the repository, or open an issue (if you aren't comfortable with \LaTeX).
 \pagebreak
 \tableofcontents
 \pagebreak
@@ -108,7 +108,8 @@ All the following commands are for Debian based systems (which is what Ubuntu is
 
 \subsubsection{Create a detailed list of installed packages}
 \begin{Verbatim}[commandchars=\\\{\}]
-\codeHighlight{COLUMNS=200 dpkg-query -l > packages_list.list}
+\codeHighlight{COLUMNS=200 dpkg-query -l
+> packages_list.list}
 \end{Verbatim}
 COLUMNS is a variable being passed to dpkg-query, and isn't a mandatory part of the command.  In this case, however, it helps to format the results for the resulting text file. It essentially queries dpkg for a list of installed packages. The resulting list will contain package names, versions and descriptions. Good for looking up what’s installed and what is done by which package. Alphabetical order.
 
@@ -128,7 +129,7 @@ This command generates a list containing the names of all packages that have bee
 \subsubsection{Restore a list of packages}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{dpkg --get-selections | awk '!/deinstall|purge|hold/ \{print \$1\}'
- > packages.list}
+> packages.list}
 \end{Verbatim}
 
 \subsubsection{Save all software sources to one file}
@@ -231,7 +232,7 @@ The above command installs all packages listed in the local files backup from \h
 \end{enumerate}
 This long process will result in having your old packages installed into a new system. This can help make the occasional re-install infinitely easier. Or, if you have a system you're completely satisfied with, you can then move it to a new system. The ArchWiki has plenty of information for those of you trying to move more than just the installed packages.
 
-\section{Hard drive commands}
+\section{Hard disk commands}
 \label{Hard drive commands}
 \subsection{Full list of partitions}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -239,7 +240,7 @@ This long process will result in having your old packages installed into a new s
 
 \codeHighlight{sudo gdisk -l} # for GPT (UEFI) systems
 \end{Verbatim}
-These commands will print a list of all hard drives and their partitioning structure. If you're unsure of which command to use, fdisk is probably for you. Don't worry - no harm running the wrong command, and it will prompt you that you ought to be using the other command.
+These commands will print a list of all hard disks and their partitioning structure. If you're unsure of which command to use, fdisk is probably for you. Don't worry - no harm running the wrong command, and it will prompt you that you ought to be using the other command.
 
 \subsection{Back up MBR (Master Boot Record)}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -253,7 +254,7 @@ This command runs dd on the "input file" (if) of /dev/hda (replace this with the
 \end{Verbatim}
 Similar as with the MBR command, this command backs up a section of the hard drive. In this case, it backs up only the section of the hard drive that contains boot code.
 
-\subsection{Display detailed information on your Hard Disk}
+\subsection{Display detailed information on your hard disk}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{sudo hdparm -I} /dev/sdx
 \end{Verbatim}
@@ -287,7 +288,7 @@ I'm honestly of two minds about this suggestion.  On one hand, I can accept doin
 \end{Verbatim}
 This command can be extremely dangerous to use if you're not sure what you're doing. It writes to the disk and fills it with zeros, effectively wiping the hard drive.  For the security-conscious of you, doing this a couple of times on a drive before throwing it away/giving it away, it will make it much more difficult to restore data from the drive. It's best used in conjunction with the following command. Be sure to replace /sda/sdb with the correct path.
 
-\subsection{Fill hard drive with random data}
+\subsection{Fill hard disk with random data}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textbf{BE CAREFUL!!!}
 \codeHighlight{dd if=/dev/urandom of=}/dev/sdb
@@ -295,11 +296,11 @@ This command can be extremely dangerous to use if you're not sure what you're do
 \end{Verbatim}
 This command is extremely dangerous to use blindly without understanding what you're doing. This is because, similar to the previous command, it fills the hard drive with data. Instead of zeros, it instead uses random data. The reader who submitted this code mentions as well that they do this with old drives before selling them. They also mention that their preference is to re-format them as \textbf{NTFS} at the end as well.  Remember to replace /dev/sdb with the correct path.
 
-\subsection{Get UUIDs of your hard drive partitions}
+\subsection{Get UUIDs of your hard disk partitions}
 \begin{Verbatim}[commandchars=\\\{\}]
 sudo \codeHighlight{blkid}
 \end{Verbatim}
-Blkid prints the UUIDs of your hard drive partitions. It can also be limited to one hard drive or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
+Blkid prints the UUIDs of your hard disk partitions. It can also be limited to one hard disk or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
 
 \section{Password generation}
 \label{Password generation}
@@ -307,13 +308,13 @@ Blkid prints the UUIDs of your hard drive partitions. It can also be limited to 
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{makepasswd --string 0123456789 --chars 32}
 \end{Verbatim}
-This command generates a single 32-character long numeric password. Makepasswd is not always installed by default.
+This command generates a single 32-character long numeric password. \textbf{Makepasswd is not always installed by default.}
 
 \subsection{Alphanumeric passwords with special characters}
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{pwgen -sy 32 64}
 \end{Verbatim}
-This command generates 64 passwords of a 32-character length that contains letters, numbers and special characters. The reason why we show how to generate multiple ones at first is because it can be useful when setting up a large number of networks at once.  \textbf{Pwgen is not installed by default.}
+This command generates 64 passwords of a 32-character length that contains letters, numbers and special characters. The reason why we show how to generate multiple ones at first is because it can be useful when setting up a large number of networks at once. If you leave out the y switch, no special characters (y for symbols) are contained in the passwords. So they are easier to remember, but less secure.  \textbf{Pwgen is not installed by default.}
 
 \section{wget}
 \subsection{Make an offline copy of a website}
@@ -328,7 +329,7 @@ This command uses wget to impersonate Firefox's user agent, and then runs recurs
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{wget -c }http://example.com/file.ext
 \end{Verbatim}
-Wget grabs the supplied link and downloads the file - in the example it would download the index.html file, and if you give it a file link, it will download the file.  The -c switch lets you continue a download if it's interrupted.
+Wget grabs the supplied link and downloads the file - in the example it would download the file.ext file.  The -c switch lets you continue a download if it's interrupted.
 
 \section{Display hardware information}
 \label{Display hardware information}
@@ -482,7 +483,7 @@ If you don't mind using a pre-build tool, using recordmydesktop is probably easi
 \end{Verbatim}
 This command tells ffmpeg that starting from 2 minutes and 23 seconds into the video, to copy out the following 25 seconds (-t 25) from input.foo into output.foo
 
-\subsection{Use vdpau (hardware accelerated decoding in mplayer)}
+\subsection{Use vdpau (hardware accelerated decoding) in mplayer}
 Nvidia uses the vdpau library to offload video encoding and decoding to the graphics card.  To use this in mplayer, do the following:
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{mplayer -vo vdpau -vc ffh264vdpau }file
@@ -519,6 +520,8 @@ sudo fdisk /dev/sdb
 
 # delete existing parttions, maybe more than one
 d [enter]
+
+1 [enter]
 
 # create first partition
 n [enter]
@@ -625,7 +628,7 @@ e2fsck -f /dev/mapper/vg-root
 \subsubsection{Install Linux}
 Now you can install Linux on your thumbdrive using the graphical installer provided with the live system. It is important that you select "something else" or "manual partitioning" when asked what to do by the installer. Then you have to select /dev/sdb1 as /boot partition and /mapper/vg-root as / partition (option "mount point"). And you have to select /dev/sdb ans destination drive for the boot loader. This is very important. If you don't select the proper drive you may break your system! When the installation process has finished, click on "continue testing". \textbf{Don't click on restart!} We still have some things to do in the live system to get the encrypted installation working.
 
-\subsubsection{Configure installed system to use lvm and encryption}
+\subsubsection{Configure installed system for lvm and encryption}
 Open a terminal window. We will now configure our new installation using the commands blkid and chroot we got to now above. First, we need the UUID of the encrypted volume. Execute the following and note the UUID:
 \begin{Verbatim}[commandchars=\\\{\}]
 sudo blkid
