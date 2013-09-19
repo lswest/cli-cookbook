@@ -604,15 +604,18 @@ apt-get update && apt-get install hashalot cryptsetup lvm2
 \end{Verbatim}
 Finally, we have to create a file so that our Linux finds and uses the encrypted volume. Open your favourite console editor, e.g. vim or nano, and create the file /etc/crypttab. Do not leave the chroot environment! Save the following line to that file, containing the UUID you noted above:
 \begin{Verbatim}[commandchars=\\\{\}]
-pvcrypt /dev/disk/by-uuid/uuid-from-above\t none \t luks
+pvcrypt /dev/disk/by-uuid/uuid-from-above	 none luks
 \end{Verbatim}
 At last, we have to check if our fstab contains the proper information; still being in the chroot environment. Open /etc/fstab in your favourite editor. The file should look like that:
 \begin{Verbatim}[commandchars=\\\{\}]
- #/etc/fstab: static file system information. #
-		 <file system> <mount point> <type> <options> <dump> <pass>	
-		  #proc		/proc	      proc   defaults  0      0		
-		  #/dev/mapper/vg-root UUID=c8d9b9a0-2198-4966-bc3a-39259df6a2c2 / ext4 noatime,errors=remount-ro 0 1  
-		  /dev/sdb1 UUID=6af425ad-99b8-44a5-9ee1-0349141f9b1f /boot ext3  relatime 0 2
+ #/etc/fstab: static file system information. 
+ #<file system> <mount point> <type> <options> <dump> <pass>	
+ #proc		/proc	      proc   defaults  0      0
+ 	
+ #/dev/mapper/vg-root UUID=c8d9b9a0-2198-4966-bc3a-39259df6a2c2 / ext4 noatime,
+ errors=remount-ro 0 1
+ 
+ /dev/sdb1 UUID=6af425ad-99b8-44a5-9ee1-0349141f9b1f /boot ext3  relatime 0 2
 \end{Verbatim}
 Of course, you will have different UUIDs. I recommend using noatime on the thumbdrive as mount option. This will again increase file system performance a bit. But still, the performance will not be as good as with a non-encrypted drive.
 
