@@ -501,7 +501,7 @@ As Ubuntu recognizes new hardware at each startup, you can even use the thumbdri
 
 At last, I recommend not to create the encrypted drive on your productive machine. As we perform hard disk operations, you can easily break your system by misspelling a command. Use a spare computer or a less important one, if you have one. We will take no responsibilty for data loss resulting from the application of this tutorial.
 
-Note: You have to enter the encrytion passphrase at each startup. This is not necessary if you just have an encrypted /home and swap. Additionally, Suspend-to-Disk will not work with encryption of /home and swap, as it always writes its data unencrypted. But that doesn't bother us, for we do not create a swap partition and are not going to use any suspend modes with our encrypted installation.
+Note: You have to enter the encrytion passphrase at each startup. This is not necessary if you just have an encrypted /home and swap. Additionally, Suspend-to-Disk will not work with encryption of /home and swap, as it always writes its data unencrypted.
 
 \subsection{What you need to start}
 \begin{enumerate}
@@ -661,6 +661,16 @@ pvcrypt /dev/disk/by-uuid/uuid-from-above	 none luks
 \end{Verbatim}
 At last, we have to check if our fstab contains the proper information; still being in the chroot environment. Open /etc/fstab in your favourite editor. The file should look like that:
 \begin{Verbatim}[commandchars=\\\{\}]
+<<<<<<< HEAD
+ #/etc/fstab: static file system information. 
+ #<file system> <mount point> <type> <options> <dump> <pass>	
+ #proc		/proc	      proc   defaults  0      0
+ 	
+ #/dev/mapper/vg-root UUID=c8d9b9a0-2198-4966-bc3a-39259df6a2c2 / ext4 noatime,
+ errors=remount-ro 0 1
+ 
+ /dev/sdb1 UUID=6af425ad-99b8-44a5-9ee1-0349141f9b1f /boot ext3  relatime 0 2
+=======
 #/etc/fstab: static file system information. #
 <file system> <mount point> <type> <options> <dump> <pass>	
 #proc /proc proc defaults 0 0		
@@ -671,6 +681,7 @@ noatime,errors=remount-ro 0 1
 Of course, you will have different UUIDs. I recommend using noatime on the thumbdrive as mount option. This will again increase file system performance a bit. But still, the performance will not be as good as with a non-encrypted drive. You can now close the chroot session with:
 \begin{Verbatim}[commandchars=\\\{\}]
 exit
+>>>>>>> ad51f194d9f54c520bdd788dcff3254c87510c5a
 \end{Verbatim}
 
 \subsubsection{Boot into the encrypted sytem}
