@@ -13,11 +13,12 @@
 
 \begin{document}
 \title{CLI Cookbook}
-\author{Lucas Westermann with E. Frank Sandig \\ and other readers of Command \& Conquer}
+\author{Lucas Westermann with E. Frank Sandig\thanks{sandigf@mailserver.tu-freiberg.de} \\ and other readers of Command \& Conquer}
 \maketitle
 \textbf{Note: Each command in a longer list is separated by a blank line.  All commands on more than one line without a blank line are simply wrapped text - run it as one command! } \\
 You can find this on GitHub: \url{https://github.com/lswest/cli-cookbook}\\
 If you want to contribute - feel free to clone the repository, or open an issue (if you aren't comfortable with \LaTeX).
+\vfill
 \pagebreak
 \tableofcontents
 \pagebreak
@@ -147,6 +148,11 @@ This long command finds all entries in sources.list and the sub-directories, put
 This command simply makes a copy of the trusted key list (stored under /etc/apt/) and copies it to the current directory. It will not save keys stored in /etc/apt/trusted.gpg.d, where Steam, for instance, puts its key. You can simply copy that folder the same way:
 \begin{Verbatim}[commandchars=\\\{\}]
 \codeHighlight{sudo cp -R /etc/apt/trusted.gpg.d trusted-keys.gpg.d.save}
+\end{Verbatim}
+
+If you run Ubuntu and have purchased software via Ubuntu Software Center, you are able to reinstall it using the commandline and the list above, too. In this case, you also need the file auth.conf, which is copied using the following command:
+\begin{Verbatim}[commandchars=\\\{\}]
+\codeHighlight{sudo cp /etc/apt/auth.conf auth.conf}
 \end{Verbatim}
 
 \subsubsection{Restore installation}
@@ -305,6 +311,13 @@ sudo \codeHighlight{blkid}
 \end{Verbatim}
 Blkid prints the UUIDs of your hard disk partitions. It can also be limited to one hard disk or one partition by just passing /dev/sda1, for instance, to blkid. This is useful if you had to reformat your /home or another partition or if you have wiped your swap and reformatted it using the dd command above and your partitioner of choice. After you know the UUIDs, you can put them in your fstab so the automount at startup works properly with the newly formatted partitions.
 
+\subsection{Get serial No. of your hard disk}
+\begin{Verbatim}
+sudo hdparm -i /dev/sdc | sed
+-ne '/SerialNo/{s/.*SerialNo=\*\(.*\)/\1/ ; p}'
+\end{Verbatim}
+This command prints nothing but the drive's serial number. Useful if you are reporting problems to the manufacturer or the helpful community. Or if you are just curious.
+
 \section{Password generation}
 \label{Password generation}
 \subsection{Numeric passwords}
@@ -411,6 +424,21 @@ After that, just type whatever the name of your alias was, and it will run the s
 \codeHighlight{sudo netstat -lntup}
 \end{Verbatim}
 This is a fairly straightforward command - it lists users and the ports they have opened.
+
+\subsection{Power off at a certain time}
+\begin{Verbatim}[commandchars=\\\{\}]
+\codeHighlight{sudo shutdown -h 22:30}
+\end{Verbatim}
+This command will power off your computer at 10:30pm on a machine set to 24\,h time format. It ist also possible to restart using -r istead of -h. If you want to shut down after a certain period of time, use this one, where +90 indicates the period of time in minutes:
+\begin{Verbatim}[commandchars=\\\{\}]
+\codeHighlight{sudo shutdown -h +90}
+\end{Verbatim}
+
+\subsection{Convert a date to UNIX time}
+Some tools, such as the data recovery tool ext4magic, request dates to be given in seconds from January 1st 1970, the beginning of the UNIX era. With the command line tool date, you can easily get this time format as follows:
+\begin{Verbatim}[commandchars=\\\{\}]
+\codeHighlight{date -d "2014-04-01 12:00" +%s}
+\end{Verbatim}
 
 \section{Miscellaneous fixes}
 \subsection{Upside down webcam in Skype}
